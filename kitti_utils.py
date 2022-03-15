@@ -200,7 +200,7 @@ class Kittidata:
         return self.project_rect_to_image(pts_3d_rect)
 
     def get_bbx(self,label):
-        """get the bounding box in velo coordinate
+        """get the bounding box in camera coordinate
         """
         label2 = np.zeros(len(label))
         label2[1:] = np.array([float(x) for x in label[1:]])
@@ -208,6 +208,9 @@ class Kittidata:
         x_corners = [l/2,-l/2,-l/2,l/2,l/2,-l/2,-l/2,l/2]
         y_corners = [0,0,0,0,-h,-h,-h,-h]
         z_corners = [w/2,w/2,-w/2,-w/2,w/2,w/2,-w/2,-w/2]
+        # x_corners = [-l/2,l/2,-l/2,-l/2,+l/2,-l/2,l/2,l/2]
+        # y_corners = [-h/2,-h/2,h/2,-h/2,h/2,h/2,-h/2,h/2]
+        # z_corners = [-w/2,-w/2,-w/2,w/2,w/2,w/2,w/2,-w/2]
         box_corner = np.c_[x_corners,y_corners,z_corners]
         #rotate in y axis theta degree
         theta = np.float(label2[14])
@@ -218,6 +221,7 @@ class Kittidata:
         rotate_box[:,0] = rotate_box[:,0] + location[0]
         rotate_box[:,1] = rotate_box[:,1] + location[1]
         rotate_box[:,2] = rotate_box[:,2] + location[2]
+        # return rotate_box
         bbx = self.project_rect_to_velo(rotate_box)
         return bbx[:,:3]
 

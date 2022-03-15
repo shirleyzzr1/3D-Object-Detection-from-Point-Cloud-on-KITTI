@@ -1,5 +1,6 @@
 from cmath import pi
 from cv2 import split
+import matplotlib
 from matplotlib.transforms import Bbox
 import numpy as np
 import open3d as o3d
@@ -90,8 +91,6 @@ def generate_label(labels,scores,bbx_3ds,bbx_2ds,result_path,idx):
             ]
             linestr = " ".join(line_list) + "\n"
             lines.append(linestr)
-            linestr = " ".join(line_list) + "\n"
-            lines.append(linestr)
         if(len(lines))==0:
             line_list = [
                 "don't care",
@@ -111,16 +110,16 @@ def generate_label(labels,scores,bbx_3ds,bbx_2ds,result_path,idx):
 def get_bbx_information(points_in_rect):
     #https://stackoverflow.com/questions/32892932/create-the-oriented-bounding-box-obb-with-python-and-numpy
     a = points_in_rect[:,[0,2]]
-    ca = np.cov(points_in_rect[:,[0,2]],y = None,rowvar = 0,bias = 1)
+    ca = np.cov(a,y = None,rowvar = 0,bias = 1)
     v, vect = np.linalg.eig(ca)
     rotate = np.linalg.inv(vect)
-    ry = np.arctan2(vect[0][1],vect[0][0])
+    ry = -np.arctan2(vect[0][0],vect[0][1])
     ar = np.matmul(rotate,a.T).T
     # get the minimum and maximum x and y 
     mina = np.min(ar,axis=0)
     maxa = np.max(ar,axis=0)
     diffxz = (maxa - mina)
-    w,l = diffxz[1],diffxz[0]
+    l,w = diffxz[1],diffxz[0]
     centerxz = mina + diffxz/2
     centerxz = np.dot(vect,centerxz)
     # centerxz = np.dot(vect,centerxz)
@@ -137,24 +136,22 @@ def get_bbx_information(points_in_rect):
 
     # rotate_box[:,0] = rotate_box[:,0] + centerxz[0]
     # rotate_box[:,1] = rotate_box[:,1] + centerxz[1]
-
+    # fig = plt.figure(figsize=(12,12))
     # ax = fig.add_subplot(122)
     # ax.scatter(a[:,0],a[:,1])
     # ax.scatter([centerxz[0]],[centerxz[1]])    
     # ax.plot(rotate_box[:,0],rotate_box[:,1],'-')
     # plt.axis('equal')
-
     # plt.show()
     return h,w,l,centerxz[0],centery,centerxz[1],ry
-
 
 
 if __name__=="__main__":
     kitti_dir = "../../../dataset/kitti/object"
     pcd = o3d.geometry.PointCloud()
     split_dir = os.path.join(kitti_dir,"ImageSets","val"+".txt")
-    # split_name = np.loadtxt(split_dir)
-    split_name = [7301]
+    split_name = np.loadtxt(split_dir)
+    # split_name = [7301]
     vis_flag = 0
     net = PointNet()
     net.load_state_dict(torch.load("./model/model_72.pth",map_location=torch.device('cpu')))
