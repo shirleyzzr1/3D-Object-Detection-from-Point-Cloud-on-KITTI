@@ -1,3 +1,6 @@
+"""
+turn all groundtruth labels "Car,Van,Truck,Tram" into "Vehicle"
+"""
 import numpy as np
 import os
 if __name__=="__main__":

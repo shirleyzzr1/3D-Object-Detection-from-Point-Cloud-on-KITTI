@@ -77,6 +77,7 @@ if __name__=="__main__":
             if i%5==0:
                 print(f'[{epoch + 1}, {i + 1:5d}] loss: {loss.item() /batch_size:.3f}')
             print("epoch",epoch,"i",i)
+            
         print('training acc', training_correct / len(train_data))
         writer.add_scalar('training loss', training_loss / len(train_data),epoch)
         writer.add_scalar('training acc', training_correct / len(train_data),epoch)
