@@ -1,3 +1,8 @@
+"""
+ground_segmentation.py
+Faster dbscan and ground_removal are implemented using open3d api
+self_implemented ground_segmentation and DBSCAN is slow and inaccurate
+"""
 import numpy as np
 import open3d as o3d
 import struct
@@ -80,6 +85,9 @@ def faster_ground_removal(data):
     outlier_cloud = pcd.select_by_index(inliers, invert=True)    
     return outlier_cloud
 def faster_dbscan(data):
+    """
+    Remove the ground from pointcloud
+    """
     pcd = data
     with o3d.utility.VerbosityContextManager(
             o3d.utility.VerbosityLevel.Debug) as cm:
@@ -97,14 +105,13 @@ def faster_dbscan(data):
                                     up=[0.1204, -0.9852, 0.1215])
     return labels
 def clustering(data):
-    # dbscan = DBSCAN()
-    # dbscan.fit(data)
-    # clusters_index = dbscan.fit_predict(data)
+    """
+    Finding the cluster using DBSCAN
+    """
     dbscan = DBSCAN()
     dbscan.fit(data)
     clusters_index = dbscan.predict(data)
     clusters_index = np.array(clusters_index).astype(int)
-
     return clusters_index
 
 def plot_cluster(data, cluster_index):
@@ -127,10 +134,3 @@ if __name__=="__main__":
     point_no_ground = faster_ground_removal(pcd)
     index = faster_dbscan(point_no_ground)
     np.savetxt("label.txt",index)
-    # cluster_index = clustering(point_data)
-    # plot_cluster(point_data,cluster_index)
-
-
-    # pointcloud = o3d.geometry.PointCloud()
-    # pointcloud.points = o3d.utility.Vector3dVector(point_data)
-    # o3d.visualization.draw_geometries([pointcloud])

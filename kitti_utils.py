@@ -145,8 +145,6 @@ class Kittidata:
             else:
                 pcd_colors[inlier_indices] = [1,1,0]
 
-
-
             line_set = o3d.geometry.LineSet()
             line_set.points = o3d.utility.Vector3dVector(bbx)
             line_set.lines = o3d.utility.Vector2iVector(lines)
@@ -208,9 +206,6 @@ class Kittidata:
         x_corners = [l/2,-l/2,-l/2,l/2,l/2,-l/2,-l/2,l/2]
         y_corners = [0,0,0,0,-h,-h,-h,-h]
         z_corners = [w/2,w/2,-w/2,-w/2,w/2,w/2,-w/2,-w/2]
-        # x_corners = [-l/2,l/2,-l/2,-l/2,+l/2,-l/2,l/2,l/2]
-        # y_corners = [-h/2,-h/2,h/2,-h/2,h/2,h/2,-h/2,h/2]
-        # z_corners = [-w/2,-w/2,-w/2,w/2,w/2,w/2,w/2,-w/2]
         box_corner = np.c_[x_corners,y_corners,z_corners]
         #rotate in y axis theta degree
         theta = np.float(label2[14])

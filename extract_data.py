@@ -5,6 +5,9 @@ import open3d as o3d
 import matplotlib.pylab as plt
 # from sklearn.cluster import DBSCAN
 def faster_ground_removal(data):
+    """
+    remove the ground
+    """
     pcd = data
     # o3d.visualization.draw_geometries([pcd])
     plane_model, inliers = pcd.segment_plane(distance_threshold=0.2,
@@ -13,6 +16,9 @@ def faster_ground_removal(data):
     outlier_cloud = pcd.select_by_index(inliers, invert=True)    
     return outlier_cloud
 def faster_dbscan(data):
+    """
+    Clustring using DBSCAN
+    """
     pcd = data
     # o3d.visualization.draw_geometries([pcd])
 
@@ -32,6 +38,10 @@ def faster_dbscan(data):
     #                                 up=[0.1204, -0.9852, 0.1215])
     return labels
 def extract_data(kitti_cls_dir,kitti_dir,split):
+    """
+    extract data by catagory, "Vehicle","Pedestrain","Cyclist","Other"
+    "Other" object are result of clustering
+    """
     os.makedirs(os.path.join(kitti_cls_dir,split,"Vehicle"),exist_ok=True)
     os.makedirs(os.path.join(kitti_cls_dir,split,"Pedestrian"),exist_ok=True)
     os.makedirs(os.path.join(kitti_cls_dir,split,"Cyclist"),exist_ok=True)
@@ -51,13 +61,13 @@ def extract_data(kitti_cls_dir,kitti_dir,split):
             inlier = kitti.in_hull(kitti.lidar,label["bbx"])
             # print("label",label['label'])
             if label['label']=="Vehicle":
-                # np.savetxt(os.path.join(kitti_cls_dir,split,label["label"],str(Vehicle_cnt)+".txt"),kitti.lidar[np.where(inlier==True)])
+                np.savetxt(os.path.join(kitti_cls_dir,split,label["label"],str(Vehicle_cnt)+".txt"),kitti.lidar[np.where(inlier==True)])
                 Vehicle_cnt +=1
             elif label['label']=='Pedestrian':
-                # np.savetxt((os.path.join(kitti_cls_dir,split,label["label"],str(Pedestrain_cnt)+".txt")),kitti.lidar[np.where(inlier==True)])
+                np.savetxt((os.path.join(kitti_cls_dir,split,label["label"],str(Pedestrain_cnt)+".txt")),kitti.lidar[np.where(inlier==True)])
                 Pedestrain_cnt +=1
             elif label['label']=="Cyclist":
-                # np.savetxt(os.path.join(kitti_cls_dir,split,label["label"],str(Cyclist_cnt)+".txt"),kitti.lidar[np.where(inlier==True)])
+                np.savetxt(os.path.join(kitti_cls_dir,split,label["label"],str(Cyclist_cnt)+".txt"),kitti.lidar[np.where(inlier==True)])
                 Cyclist_cnt+=1
             inlier = kitti.in_hull(kitti.lidar,label["bbx"])
             inliers = inliers | inlier

@@ -1,3 +1,4 @@
+"Adapted from https://github.com/lijx10/NN-Trees/blob/master/octree.py"
 import numpy as np
 class Octant:
     def __init__(self, children, center, extent, point_indices, is_leaf):

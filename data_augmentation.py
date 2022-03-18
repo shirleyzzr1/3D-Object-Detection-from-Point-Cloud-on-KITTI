@@ -1,3 +1,8 @@
+"""
+Augmented training data by removing pointclouds which is less than 
+a certain threshold, also only save 5000 images for Other catagory
+to balance the number of training data
+"""
 from dataset import KittiDataset
 import os
 import numpy as np
