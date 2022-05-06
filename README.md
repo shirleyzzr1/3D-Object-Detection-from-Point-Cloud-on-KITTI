@@ -4,11 +4,11 @@
 
 This repository contains the code for 3D object detection from Point Cloud on KITTI. 
 
-![](./images/resultgif)
+![](./images/result.gif)
 
 ### File usage
 
-**generate_label.py **turn all groundtruth labels "Car,Van,Truck,Tram" into "Vehicle"
+**generate_label.py ** turn all groundtruth labels "Car,Van,Truck,Tram" into "Vehicle"
 
 **extract_data.py** **kitti_utils.py** segment Cyclist, Pedestrian and Vechicles point cloud based on groundtruth label on training set. Segment the background by DBSCAN clustering.
 
@@ -16,7 +16,7 @@ This repository contains the code for 3D object detection from Point Cloud on KI
 
 **model.py** **train.py** train the processed dataset on PointNet . Some pre-trained mode is put in the ./model directory
 
-**newvis.py** visualize the result
+**newvis.py** visualize the result using trained model and generate bounding box on both 3D and 2D
 
 
 
