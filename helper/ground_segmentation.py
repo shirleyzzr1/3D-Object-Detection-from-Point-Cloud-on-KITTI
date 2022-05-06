@@ -83,6 +83,7 @@ def faster_ground_removal(data):
                                             ransac_n=3,
                                             num_iterations=1000)
     outlier_cloud = pcd.select_by_index(inliers, invert=True)    
+    o3d.visualization.draw_geometries([outlier_cloud])
     return outlier_cloud
 def faster_dbscan(data):
     """
@@ -127,7 +128,7 @@ def plot_cluster(data, cluster_index):
     point_cloud.colors = o3d.utility.Vector3dVector(colors[cluster_index] / 255)
     o3d.visualization.draw_geometries([point_cloud])
 if __name__=="__main__":
-    point_data = convert_kitti_bin_to_pcd("/home/shirleyzzr/dataset/kitti/object/training/velodyne/007301.bin")
+    point_data = convert_kitti_bin_to_pcd("/home/shirleyzzr/dataset/kitti/object/training/velodyne/004736.bin")
 
     pcd = o3d.geometry.PointCloud()
     pcd.points = o3d.utility.Vector3dVector(point_data[:,:3])
